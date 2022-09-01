@@ -26,10 +26,11 @@ Run through the following steps to create the repo in your account:
 1. Sign in into your GitHub account
 2. Navigate to the repo we prepared for you
 <br>Enter the URL https://github.com/DevOps-Gilde/S2_Code_GitHubActions into the page as illustrated below
-<br><img src="./images/GitHubRepo_Open.png" width="400"/>
+<br><img src="./images/GitHubRepo_Open.png" width="400"/><br>
+
 3. Fork the prepared repo into your account
 <br>"Fork" means copy the source repository to start your own journey. Click on Fork on the top Right Corner as shown below:
-<br><img src="./images/forkbutton.PNG" width="400"/>
+<br><img src="./images/forkbutton.PNG" width="400"/><br>
 The screenshot below shows the displayed screen where you can adjust the settings for the fork process. Uncheck the checkbox that limits the fork to the main branch only. The other defaults you leave as they are. Click on the button "Create fork" to start the process.
 <br><img src="./images/GitHubRepo_Fork_Mask.png" width="400"/>
 
