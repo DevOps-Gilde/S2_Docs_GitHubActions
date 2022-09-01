@@ -1,144 +1,169 @@
-# Infrastructure Repository and Pipeline
-
-## Introduction
+# 1. Introduction to the Infrastructure Pipeline
 
 You should now have Completed the Following things:
 1. Setup your GitHub Account
-2. Setup the Example Code in your Account
-3. Added the Repository Secrets to the Example Code
+2. Setup your Git Repository
 
-Next you will get an Overview over the Example Code to Setup your first own Website on Azure. This will only be the most basic Infrastructure Setup. In a later Step we will then alter the Websites Content.
+Next you will create your own workflows to setup the azure services required for your Website on Azure. We will use the GitHub Repository to host the code for our workflows. A workflow consists of separate steps so called actions. Hence the name GitHub Actions. Workflows are the counterpart of Azure DevOps pipelines if you joined our previous session.
 
 If you want to learn more about the concept of a pipeline you can do it here:
 
 [https://docs.github.com/en/actions/quickstart](https://docs.github.com/en/actions/quickstart)
 
+# 2. Setting up the Infrastructure Workflow
 
-# 1. Setting up the Infrastructure Pipeline
+## Introduction
 
-The first Step in Creating a Pipeline with GitHub Actions would normally be to Select a Template and Start from there.
+Our pipeline will use the code based approach. That means we will refer in our workflow to an existing YAML file in our repository. It defines the logical steps your pipeline consists of. GitHub Actions allow to split a pipeline in a hierarchy of jobs and steps.
 
-To do so you would go to Actions in your Code Repository and select an appropriate Template or start from Scratch with an empty one.
-
-In our Example we already Created the necessary Files. So to say our own Template.
-
-Your first Task is to go into your Repository and look at the Following file.
-
->_Warning: The formatting of YAML (yml) files is based on spaces and tabs and therefore the following lines should be copied with care.
-> It is advised to use Visual Studio Code to validate the copied file._
-> <br> [How to work with Git Locally](/01.5_SetupGit.md)
-
-
-`#File: .github/workflows/azure_infra.yml`
-```
-on: 
-  workflow_dispatch:
-
-name: infra
-
-jobs:
-
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-    
-    - name: Azure Login
-    uses: azure/login@v1
-    with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-    
-    - name: Azure CLI script
-    uses: azure/CLI@v1
-    with:
-        inlineScript: |
-        az appservice plan create -g ${{ secrets.rg }} -n ${{ secrets.asp }} --is-linux --number-of-workers 1 --sku B1
-        az webapp create -g ${{ secrets.rg }} -p ${{ secrets.asp }} -n ${{ secrets.webapp }}  --runtime "node|10.14"
-```
-
-## Azure Cli
-
-The Pipeline we are Proposing here is using the Azure CLI to create the App Service Plan and the WebApp on Azure.
-
-Azure CLI Docs: 
+A step has a certain type which defines what the step is about and which programing language you use inside the step. We will use **Azure CLI** as programming language. Azure CLI Docs: 
 <br> https://docs.microsoft.com/de-de/cli/azure/what-is-azure-cli
 
-Azure AppServicePlan and WebApp: 
-<br> https://docs.microsoft.com/en-us/azure/app-service/overview
+Our YAML file will reference various things such as names for azure service instances we create, our subscription, a service principal and the resource group we want to deploy to. We will use secrets to store these values within our GitHub account and reference them in our YAML file.
 
-## Triggers
+## Create GitHub Secrets
 
-The Code Starts by using "`on: workflow_dispatch`" which means one of the Triggers to Start this Pipeline is to do it Manually.
+To avoid name collisions when creating our Resources on Azure in the following steps, we need to create unique names for everyone.
+Sometimes Naming Conventions  
+### Prefix:
 
-There are many Automatic triggers you can use, to learn more about Triggers check this:
-https://docs.github.com/en/actions/reference/events-that-trigger-workflows#workflow_dispatch
+Best Practice Prefixes for Specific Azure Resources:
 
-## Pipeline Name
+https://docs.microsoft.com/de-de/azure/cloud-adoption-framework/ready/azure-best-practices/resource-abbreviations
 
-Next we Specify the Name of our GitHub Action in our Example "`name: infra`".
+### Suffix:
 
-## Code runner
+We all are in the same Subscription and use same Resource Group but everybody uses his own App Service Plan and his own Webapp.
 
-After we define the Triggers and the Name of the workflow we need to Specify its "`jobs`".
-In our Example we only need one Job "`deploy`".
+Therefore, pick unique names for your App Service Plan and Webapp variables.
 
-Next we Specify what image we Expect our job to run on:
-"`runs-on: ubuntu-latest`"
+You may attach your own Suffix like a short form of your name and a random Number.
+If your name is Florian Peters for Example you could choose:
 
+`flopet631`
+
+The Resource Name would then be `plan-flopet631`
+
+In Real Customer Environments there are usually more detailed guidelines on how to name Resources.
+
+### AZURE_CREDENTIALS
+
+This is the Connection Data needed for the Azure Subscription.
+
+For this Hackathon we will provide you with it:
+
+Secret:
+AZURE_CREDENTIALS =
+`{
+  "clientId": "#",
+  "clientSecret": "#",
+  "subscriptionId": "#",
+  "tenantId": "#"
+}`
+
+`clientId` and `clientSecret` deserve a quick extra explanation. A workflow changes things in your Azure subscription. Of course these changes must be associated with a user so that Azure can determine whether you have the permissions to do so. `clientId` is the representation of the technical user we created beforehand for you. We gave that user permission for the resource group in which you deploy your Azure services. Of course a user also needs credentials the value behind `clientSecret` is exactly that.
+
+### RG - ResourceGroup
+
+This is the Name of the Resource Group you will be using to Deploy your Website. During the Hackathon you will only have Access to the Following ResourceGroup:
+
+Secret:
+rg = 
+`ws-devops`
+
+If you want to know more about Resource Groups take a look here:
+https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/manage-resource-groups-portal#what-is-a-resource-group
+
+
+### ASP - AppServicePlan
+
+This is the Name of the App Service Plan which needs to be unique in our Subscription.
+
+Secret:
+asp=
+`plan-[your suffix]`
+
+If you want to know more about App Service Plans take a look here:
+https://docs.microsoft.com/en-us/azure/app-service/overview
+
+### WEBAPP - WebApplication
+
+This is the Name of the Web Application which needs to be unique globally.
+
+Secret:
+webapp=
+`your web app name`
+
+If you want to know more about WebApps take a look here:
+https://docs.microsoft.com/en-us/azure/app-service/overview
+
+## Adjusting YAML Pipeline file
+
+The next steps describe the adjustments that have to be done from your side to the existing file `azure_infra.yml` step by step. You find the file in your repository in the following location: `.github/workflows`
+
+Before you start typing a few general remarks about the **yaml format**. Yaml is a declarative approach and describes the steps including the building blocks you need. The various sections of a yaml file are normally a hierarchial description. The various levels of the hierarchy are indicated by leeding whitespaces. Enumeration of entries at the same hierarchy level are denoted by `-`. A single headline ends with a colon `:`. Key value pairs are also separated by `:`.
+
+The Code Starts by stating what triggers the workflow. Replace the placeholder `<TODO Trigger Clause>` with the following code:
+```YAML
+on: 
+  workflow_dispatch:
 ```
-jobs:
+It means that this workflow is started manually. There are many Automatic triggers you can use, to learn more about Triggers check [this](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#workflow_dispatch).
 
-  deploy:
+With the next change we name our workflow properly. Replace the placeholder `<TODO Name Clause>` with the following code:
+```YAML
+name: infra
+```
+
+Next we specify the VM image used for the temporary VMs behind our workflow. Replace the placeholder `<TODO VM Image Clause>` with the following code:
+```YAML
     runs-on: ubuntu-latest
-    
 ```
 
-To learn more about the Workflow Syntax and Jobs visit:
-https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobs
-
-
-## Authentication
-
-The first thing the Workflow will do is to Authenticate via the Build in Feature "`uses: azure/login@v1`" and the use of the Connection String in Stored in "`secrets.AZURE_CREDENTIALS`"
-
-```
+Now we have to ensure to login to our azure subscription with our service princial. This time we have to implement an entire step. Replace the placeholder `<TODO Azure Login Step>`as follows and we will discuss the code in more detail afterwards:
+```YAML
     - name: Azure Login
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 ```
+The code can be broken down as follows:
+- `name: Azure Login` should be familiar to you since when we named our workflow
+- `uses: azure/login@v1` refers to the type of the step in other word the action. Due to that information GitHub is now aware what kind of logical step you want to run.
+- `with:` indicates an additional parameter named `creds` that is required to login. The expression `${{ secrets.AZURE_CREDENTIALS }}` refers to the secret you created previously. The value behind the secret is a nested json structure that contains all settings from the subscription up to the service principal.
 
-## Deployment of AppService and WebApp
+Now we are ready to provide the code to run our Azure CLI commands (see [here](https://docs.microsoft.com/de-de/cli/azure/what-is-azure-cli) for details). They create the AppService Plan and the corresponding WebApp (see [here](https://docs.microsoft.com/en-us/azure/app-service/overview) for details). A general remarks regarding Azure CLI commands:
+- To run the commands you need the Azure CLI installed. This is achieved by using the GitHub action `azure/CLI@v1` which installs Azure CLI.
+- The commands have the following synax: `az <azure service type> <operation> <parameters>`. The expressions are explained in more detail below:
+  
+  - `<azure service type>`: denotes the name of the azure service
+  - `<operation>`: specifies the operation to be carried out such as `create` or `show`
+  - `<parameters>`: denotes the list of parameters. Each parameter has a name and a value. If a parameter name is a compound such as `number-of-workers` the parameter starts with `--` instead of a single hyphen.
 
-Next the Script creates with the Build in Azure CLI "`uses: azure/CLI@v1`" the AppService Plan and the corresponding WebApp. 
-
-```
-    - name: Azure CLI script
-      uses: azure/CLI@v1
-      with:
-        inlineScript: |
+Replace the placeholder `<TODO Azure CLI Service Plan>` with the following code:
+```YAML
           az appservice plan create -g ${{ secrets.rg }} -n ${{ secrets.asp }} --is-linux --number-of-workers 1 --sku B1
+```
+Replace the placeholder `<TODO Azure CLI WebApp>` with the following code:
+```YAML
           az webapp create -g ${{ secrets.rg }} -p ${{ secrets.asp }} -n ${{ secrets.webapp }}  --runtime "node|10.14"
 ```
 
-AppService with Azure CLI
-<br> https://docs.microsoft.com/de-de/cli/azure/appservice/plan?view=azure-cli-latest
-
-WebApp with Azure CLI
-<br> https://docs.microsoft.com/de-de/cli/azure/webapp?view=azure-cli-latest#az_webapp_create
-
-
-You will see there is a tiny difference in your File to this Code Snipped.
-Just Copy over the Missing Part.
+To learn more about the Workflow Syntax and Jobs visit:
+https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobs
 
 # 2. Run your Pipeline
 
-After you Set up your Secrets and fixed the Code in your Repository.
-You can try to run your Workflow.
-To do so go to Actions and select the Infra workflow on the Left site.
+## Start your workflow
 
-Now Select Run workflow on the Right side.
+After you set up your Secrets and fixed the code in your Repository you are ready to run your workflow.
+To do so go to the ",Actions" tab. GitHub Actions are disabled by default in your fork. Click the button "I understand my workflows..." as shown below.
 
-<br><img src="./images/runWorkflow.PNG" width="800"/><br>
+<br><img src="./images/Workflow_Enable.PNG" width="800"/><br>
+
+Now you see a typical master detail screen with the avilable workflows on the left-hand side. Select the "infra" workflow and click on the "Run workflow" button. In the screenshot previous runs existed already. Click on run to see the results or for troubleshooting.
+
+<br><img src="./images/Workflow_Run.PNG" width="800"/><br>
 
 ## Workflow Progress
 
