@@ -8,6 +8,6 @@ If you already have a GitHub Account you can use that one.
 If not create a new one. The steps are as follows;
 1. Enter https://github.com/ in the browser
 You should see then a page that looks like the one below.
-<br><img src="./images/GitHub_SignUp.PNG" width="400"/>
+<br><img src="./images/GitHub_SignUp.png" width="400"/>
 2. Sign up for GitHub
 Enter a valid EMail address into the EMail field. Any EMail address that you own can be used including the CapGemini one. After having entered the address click the button "Sign up for GitHub".
