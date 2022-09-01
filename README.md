@@ -18,9 +18,9 @@ We strongly recommend that you carry out the tasks below before the hackathon se
 
 The following implementation tasks will expect you:
 
-3. Create Infrastructure Pipeline [here](/04_SetupInfrastructure.md)
-4. Create WebApp Pipeline [here](/05_SetupWebsite.md)
-5. **Optional advanced extra task:** Create Monitoring [here](/06_Monitoring.md)
+3. Setup Infrastructure Workflow [here](/03_SetupInfrastructure.md)
+4. Setup WebApp Workflow [here](/04_SetupWebsite.md)
+5. **Optional advanced extra task:** Create Monitoring [here](/05_Monitoring.md)
 
 :white_check_mark: We also created a working solution located in the branch [Solution](https://github.com/DevOps-Gilde/S2_Code_GitHubActions/tree/Solution) of your forked repository that covers all tasks except monitoring. 
 If at any Point you need assistance nevertheless do not hesitate to ask. We are here to Help you.

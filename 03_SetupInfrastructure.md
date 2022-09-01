@@ -1,4 +1,4 @@
-# 1. Introduction to the Infrastructure Pipeline
+# 1. Introduction to the Infrastructure Workflow
 
 You should now have Completed the Following things:
 1. Setup your GitHub Account
@@ -6,7 +6,7 @@ You should now have Completed the Following things:
 
 Next you will create your own workflows to setup the azure services required for your Website on Azure. We will use the GitHub Repository to host the code for our workflows. A workflow consists of separate steps so called actions. Hence the name GitHub Actions. Workflows are the counterpart of Azure DevOps pipelines if you joined our previous session.
 
-If you want to learn more about the concept of a pipeline you can do it here:
+If you want to learn more about the concept of a workflow you can do it here:
 
 [https://docs.github.com/en/actions/quickstart](https://docs.github.com/en/actions/quickstart)
 
@@ -14,7 +14,7 @@ If you want to learn more about the concept of a pipeline you can do it here:
 
 ## Introduction
 
-Our pipeline will use the code based approach. That means we will refer in our workflow to an existing YAML file in our repository. It defines the logical steps your pipeline consists of. GitHub Actions allow to split a pipeline in a hierarchy of jobs and steps.
+Our workflow will use the code based approach. That means we will refer in our workflow to an existing YAML file in our repository. It defines the logical steps your workflow consists of. GitHub Actions allow to split a workflow in a hierarchy of jobs and steps.
 
 A step has a certain type which defines what the step is about and which programing language you use inside the step. We will use **Azure CLI** as programming language. Azure CLI Docs: 
 <br> https://docs.microsoft.com/de-de/cli/azure/what-is-azure-cli
@@ -97,7 +97,7 @@ webapp=
 If you want to know more about WebApps take a look here:
 https://docs.microsoft.com/en-us/azure/app-service/overview
 
-## Adjusting YAML Pipeline file
+## Adjusting YAML workflow file
 
 The next steps describe the adjustments that have to be done from your side to the existing file `azure_infra.yml` step by step. You find the file in your repository in the following location: `.github/workflows`
 
@@ -152,7 +152,7 @@ Replace the placeholder `<TODO Azure CLI WebApp>` with the following code:
 To learn more about the Workflow Syntax and Jobs visit:
 https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobs
 
-# 2. Run your Pipeline
+# 2. Run your workflow
 
 ## Start your workflow
 
