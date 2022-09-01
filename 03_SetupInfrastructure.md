@@ -159,7 +159,7 @@ https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#
 After you set up your Secrets and fixed the code in your Repository you are ready to run your workflow.
 To do so go to the ",Actions" tab. GitHub Actions are disabled by default in your fork. Click the button "I understand my workflows..." as shown below.
 
-<br><img src="./images/Workflow_Enable.PNG" width="800"/><br>
+<br><img src="./images/Workflow_Enable.png" width="800"/><br>
 
 Now you see a typical master detail screen with the avilable workflows on the left-hand side. Select the "infra" workflow and click on the "Run workflow" button. In the screenshot previous runs existed already. Click on run to see the results or for troubleshooting.
 
