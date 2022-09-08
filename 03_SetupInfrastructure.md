@@ -25,7 +25,7 @@ Our YAML file will reference various things such as names for azure service inst
 
 To create secrets you first have to navigate to the right place in GitHub (Tab Settings => Entry "Actions" under Secrets => Button "New repository secret").
 
-<br><img src="./images/secrets_path_to_enter.png" width="700"/>
+<br><img src="./images/secrets_path_to_enter.png" width="900"/>
 
 We all work in the same resource group and that's why we need naming conventions to ensure uniqueness. In our hackathon we will use simplifed ones but [here](https://docs.microsoft.com/de-de/azure/cloud-adoption-framework/ready/azure-best-practices/resource-abbreviations) you find recommendations for a real world case. The simplified naming schema we use partially is `<type-name>-<your personal identifier>`. A good idea is to use an akronym infered from your name and a number. If your name is Florian Peters for Example you could choose:
 
