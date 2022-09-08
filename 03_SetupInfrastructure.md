@@ -35,7 +35,7 @@ The full resource name for the app service plan could then be `plan-flopet631`. 
 
 ### AZURE_CREDENTIALS - Azure connection details
 
-This is the Connection Data needed for the Azure Subscription. The hashtags are placeholders. Copy the values from theteans chat (They are not given to avoid exposure of secrets in the public internet).
+This is the Connection Data needed for the Azure Subscription. The hashtags are placeholders. Copy the values from the teams chat (They are not given to avoid exposure of secrets in the public internet).
 
 Secret:
 AZURE_CREDENTIALS =
@@ -134,7 +134,7 @@ Now we are ready to provide the code to run our Azure CLI commands (see [here](h
 
 Replace the placeholder `<TODO Azure CLI Service Plan>` with the following code:
 ```YAML
-          az appservice plan create -g ${{ secrets.RG }} -n ${{ secrets.ASP }} --is-linux --number-of-workers 1 --sku B1
+          az appservice plan create -g ${{ secrets.RG }} -n ${{ secrets.ASP }} --is-linux --number-of-workers 1 --sku B1 --location ${{ secrets.LOC }}
 ```
 Replace the placeholder `<TODO Azure CLI WebApp>` with the following code:
 ```YAML
