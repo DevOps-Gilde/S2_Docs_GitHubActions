@@ -157,10 +157,15 @@ Now you see a typical master detail screen with the avilable workflows on the le
 
 <br><img src="./images/Workflow_Run.PNG" width="800"/><br>
 
+For troubleshooting just click on the name "infra" next to the icon error icon. The "infra" run at the bottom of the previous screenshot for instance. The next two screenshots show the remeining two levels until you hit the details.
+
+<br><img src="./images/wkf_trouble_1.png" width="800"/><br>
+<br><img src="./images/wkf_trouble_2.png" width="800"/><br>
+
 ## Workflow Progress
 
 Wait for your Workflow to finish.
-If the Task does not run through you may ask one of us to Help you out.
+If the Task does not run through try to figure out the problem yourself by following the troubleshooting information above. Of course we are there to help if you don't find a solution.
 ## Check your WebApp is online after approx. 5 minutes
 
 https://`[yourWebAppName]`.azurewebsites.net/
