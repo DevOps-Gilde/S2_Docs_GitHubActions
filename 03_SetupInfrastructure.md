@@ -23,34 +23,19 @@ Our YAML file will reference various things such as names for azure service inst
 
 ## Create GitHub Secrets
 
-To avoid name collisions when creating our Resources on Azure in the following steps, we need to create unique names for everyone.
-Sometimes Naming Conventions  
-### Prefix:
+To create secrets you first have to navigate to the right place in GitHub (Tab Settings => Entry "Actions" under Secrets => Button "New repository secret").
 
-Best Practice Prefixes for Specific Azure Resources:
+<br><img src="./images/secrets_path_to_enter.png" width="400"/>
 
-https://docs.microsoft.com/de-de/azure/cloud-adoption-framework/ready/azure-best-practices/resource-abbreviations
-
-### Suffix:
-
-We all are in the same Subscription and use same Resource Group but everybody uses his own App Service Plan and his own Webapp.
-
-Therefore, pick unique names for your App Service Plan and Webapp variables.
-
-You may attach your own Suffix like a short form of your name and a random Number.
-If your name is Florian Peters for Example you could choose:
+We all work in the same resource group and that's why we need naming conventions to ensure uniqueness. In our hackathon we will use simplifed ones but [here](https://docs.microsoft.com/de-de/azure/cloud-adoption-framework/ready/azure-best-practices/resource-abbreviations) you find recommendations for a real world case. The simplified naming schema we use partially is `<type-name>-<your personal identifier>`. A good idea is to use an akronym infered from your name and a number. If your name is Florian Peters for Example you could choose:
 
 `flopet631`
 
-The Resource Name would then be `plan-flopet631`
+The full resource name for the app service plan could then be `plan-flopet631`. The following paragraphs list the secrets (Key-value pairs) you have to define. Click the "New repository secret" button as described above and confirm:
 
-In Real Customer Environments there are usually more detailed guidelines on how to name Resources.
+### AZURE_CREDENTIALS - Azure connection details
 
-### AZURE_CREDENTIALS
-
-This is the Connection Data needed for the Azure Subscription.
-
-For this Hackathon we will provide you with it:
+This is the Connection Data needed for the Azure Subscription. The hashtags are placeholders. Copy the values from theteans chat (They are not given to avoid exposure of secrets in the public internet).
 
 Secret:
 AZURE_CREDENTIALS =
@@ -61,37 +46,44 @@ AZURE_CREDENTIALS =
   "tenantId": "#"
 }`
 
-`clientId` and `clientSecret` deserve a quick extra explanation. A workflow changes things in your Azure subscription. Of course these changes must be associated with a user so that Azure can determine whether you have the permissions to do so. `clientId` is the representation of the technical user we created beforehand for you. We gave that user permission for the resource group in which you deploy your Azure services. Of course a user also needs credentials the value behind `clientSecret` is exactly that.
+`clientId` and `clientSecret` deserve a quick extra explanation. A workflow changes things in your Azure subscription. Of course these changes must be associated with a user so that Azure can determine whether you have the permissions to do so. `clientId` denotes the service principal we created beforehand for you. We gave that user permission for the resource group in which you deploy your Azure services. Of course a user also needs credentials. The value behind `clientSecret` is exactly that.
 
-### RG - ResourceGroup
+### LOC - Geo-Location of the resources
+
+This is the Azure location (also known as region) where resources are geographical deployed:
+
+Secret:
+LOC = 
+`westeurope`
+
+### RG - ResourceGroup name
 
 This is the Name of the Resource Group you will be using to Deploy your Website. During the Hackathon you will only have Access to the Following ResourceGroup:
 
 Secret:
-rg = 
+RG = 
 `ws-devops`
 
 If you want to know more about Resource Groups take a look here:
 https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/manage-resource-groups-portal#what-is-a-resource-group
 
-
-### ASP - AppServicePlan
+### ASP - AppServicePlan name
 
 This is the Name of the App Service Plan which needs to be unique in our Subscription.
 
 Secret:
-asp=
-`plan-[your suffix]`
+ASP=
+`plan-<your personal identifier>`
 
 If you want to know more about App Service Plans take a look here:
 https://docs.microsoft.com/en-us/azure/app-service/overview
 
-### WEBAPP - WebApplication
+### WEBAPP - WebApplication name
 
-This is the Name of the Web Application which needs to be unique globally.
+This is the Name of the Web Application which needs to be unique globally. `<your personal identifier>` might be an option but you might have to modify it due to global uniqueness across the entire Azure.
 
 Secret:
-webapp=
+WEBAPP=
 `your web app name`
 
 If you want to know more about WebApps take a look here:
@@ -142,11 +134,11 @@ Now we are ready to provide the code to run our Azure CLI commands (see [here](h
 
 Replace the placeholder `<TODO Azure CLI Service Plan>` with the following code:
 ```YAML
-          az appservice plan create -g ${{ secrets.rg }} -n ${{ secrets.asp }} --is-linux --number-of-workers 1 --sku B1
+          az appservice plan create -g ${{ secrets.RG }} -n ${{ secrets.ASP }} --is-linux --number-of-workers 1 --sku B1
 ```
 Replace the placeholder `<TODO Azure CLI WebApp>` with the following code:
 ```YAML
-          az webapp create -g ${{ secrets.rg }} -p ${{ secrets.asp }} -n ${{ secrets.webapp }}  --runtime "node|10.14"
+          az webapp create -g ${{ secrets.RG }} -p ${{ secrets.ASP }} -n ${{ secrets.WEBAPP }}  --runtime "node:16-lts"
 ```
 
 To learn more about the Workflow Syntax and Jobs visit:

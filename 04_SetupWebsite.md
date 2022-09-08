@@ -50,7 +50,7 @@ jobs:
     - name: 'Azure webapp deploy'
       uses: azure/webapps-deploy@v2
       with:
-        app-name: ${{ secrets.webapp }}
+        app-name: ${{ secrets.WEBAPP }}
         package:  ${{ github.workspace }}/app
 ```
 
