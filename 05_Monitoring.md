@@ -7,7 +7,7 @@ This is an optional extra task you can work on. Focus of the task is monitoring 
 
 To watch your **telemetry** in App Insight we will use the portal. We created special users for portal access. Contact one of us to get the credentials for it. The next two big steps are:
 1. Extend your infra pipeline to create an App Insights resource and link it to your Web App
-2. Grab a user and monitor your Web App via the Azure portal 
+2. Grab a user and monitor your Web App via the Azure portal
 
 The next chapters will detail these two major steps.
 
