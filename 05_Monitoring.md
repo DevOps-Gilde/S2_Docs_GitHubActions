@@ -7,7 +7,7 @@ This is an optional extra task you can work on. Focus of the task is monitoring 
 
 To watch your **telemetry** in App Insight we will use the portal. We created special users for portal access. Contact one of us to get the credentials for it. The next two big steps are:
 1. Extend your infra pipeline to create an App Insights resource and link it to your Web App
-2. Grab a user and monitor your Web App via the Azure portal
+2. Grab a user and monitor your Web App via the Azure portal 
 
 The next chapters will detail these two major steps.
 
@@ -43,7 +43,7 @@ az extension add -n application-insights
 
 With the extension in place we can now create the application insights resource. In contrast to the command for the Web App we have to specify the location. We will use the same location as the location of the resource group. To achieve we will store the location in a shell variable `locName`. The assigned value will be the result of an azure cli command. Therefore, the command needs to embedded in backticks.
 ```
-locName=`az group show --name ${{ secrets.RG }} --query location --output tsv`
+locName=$(az group show --name ${{ secrets.RG }} --query location --output tsv)
 ```
 An interesting part is the `--query` argument. It is required because  `az group  show` returns the complete JSON representation of the resource group. But we need only the value of the property location. `--query` argument allows you to apply a JMESPath filter expression to the returned JSON. In our case the filter expression is just the name of the property. The `--output tsv` specifies the output format which does not contain any formatting. Both options together yield the location we are looking for.
 
@@ -54,13 +54,13 @@ az monitor app-insights component create --app apimon${{ secrets.WEBAPP }} --loc
 
 Establishing a link requires a reference in the Web App that represents our App Insights resource. App insights provides a so called *instrumentation key* that can be used as reference. The following command stores this key in a variable instrumentationKey. 
 ```
-instrumentationKey=`az monitor app-insights component show --app apimon${{ secrets.WEBAPP }} --resource-group ${{ secrets.RG }} --query  "instrumentationKey" --output tsv`
+instrumentationKey=(az monitor app-insights component show --app apimon${{ secrets.WEBAPP }} --resource-group ${{ secrets.RG }} --query  "instrumentationKey" --output tsv)
 ```
-The command follows thesame pattern as above where we stored the location of the resource group in a variable. The only difference here is the different attribut we are interested in.
+The command follows the same pattern as above where we stored the location of the resource group in a variable. The only difference here is the different attribut we are interested in.
 
 Now let's use our variable to link the Web App to App Insights. This requires updating a few **application** settings inside the Web App. One is of course our **instrumentation key**. The command below shows how that is done. 
 ```
-az webapp config appsettings set --name $webapp --resource-group ${{ secrets.RG }} --settings APPINSIGHTS_INSTRUMENTATIONKEY=$instrumentationKey APPLICATIONINSIGHTS_CONNECTION_STRING=InstrumentationKey=$instrumentationKey ApplicationInsightsAgent_EXTENSION_VERSION=~2
+az webapp config appsettings set --name ${{ secrets.WEBAPP }} --resource-group ${{ secrets.RG }} --settings APPINSIGHTS_INSTRUMENTATIONKEY=$instrumentationKey APPLICATIONINSIGHTS_CONNECTION_STRING=InstrumentationKey=$instrumentationKey ApplicationInsightsAgent_EXTENSION_VERSION=~2
 ```
 
 ## Monitor your Web App in App Insights
