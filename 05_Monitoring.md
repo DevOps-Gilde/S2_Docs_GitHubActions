@@ -60,7 +60,7 @@ The command follows thesame pattern as above where we stored the location of the
 
 Now let's use our variable to link the Web App to App Insights. This requires updating a few **application** settings inside the Web App. One is of course our **instrumentation key**. The command below shows how that is done. 
 ```
-az webapp config appsettings set --name $webapp --resource-group ${{ secrets.RG }} --settings APPINSIGHTS_INSTRUMENTATIONKEY=$instrumentationKey APPLICATIONINSIGHTS_CONNECTION_STRING=InstrumentationKey=$instrumentationKey ApplicationInsightsAgent_EXTENSION_VERSION=~2
+az webapp config appsettings set --name ${{ secrets.WEBAPP }} --resource-group ${{ secrets.RG }} --settings APPINSIGHTS_INSTRUMENTATIONKEY=$instrumentationKey APPLICATIONINSIGHTS_CONNECTION_STRING=InstrumentationKey=$instrumentationKey ApplicationInsightsAgent_EXTENSION_VERSION=~2
 ```
 
 ## Monitor your Web App in App Insights
