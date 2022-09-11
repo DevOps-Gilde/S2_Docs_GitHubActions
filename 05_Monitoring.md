@@ -56,7 +56,7 @@ Establishing a link requires a reference in the Web App that represents our App 
 ```
 instrumentationKey=`az monitor app-insights component show --app apimon${{ secrets.WEBAPP }} --resource-group ${{ secrets.RG }} --query  "instrumentationKey" --output tsv`
 ```
-The command follows thesame pattern as above where we stored the location of the resource group in a variable. The only difference here is the different attribut we are interested in.
+The command follows the same pattern as above where we stored the location of the resource group in a variable. The only difference here is the different attribut we are interested in.
 
 Now let's use our variable to link the Web App to App Insights. This requires updating a few **application** settings inside the Web App. One is of course our **instrumentation key**. The command below shows how that is done. 
 ```
