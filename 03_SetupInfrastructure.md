@@ -170,7 +170,7 @@ If the Task does not run through try to figure out the problem yourself by follo
 
 https://`[yourWebAppName]`.azurewebsites.net/
 
-You should see a &quotYour web app is running and waiting for your content&quot; welcome screen.
+You should see a &quot;Your web app is running and waiting for your content&quot; welcome screen.
 
 Congratulations, you have deployed your first WebApp infrastructure.
  Now, you can go ahead and deploy some code to your WebApp.
