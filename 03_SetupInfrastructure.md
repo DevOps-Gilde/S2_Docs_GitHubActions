@@ -118,7 +118,18 @@ Next we specify the VM image used for the temporary VMs behind our workflow. Rep
     runs-on: ubuntu-latest
 ```
 
-The step named "debug secrets" is already implemented for you. It's mere purpose is to output the secrets you specified before. Sounds easy but already the additional command `| sed...` indicates it is tricky. First why is that. Just outputting the value would just give asteriks such as `***` instead of the expected value. GitHub knows that you are outputting something sensitive via `echo` and will mask the value. `| sed` takes the `echo` output and changes it. Due to that GitHub is not masking the value anymore. The regular expression behind the `sed` command adds a space after every letter so that the changed value is still readable for us human beings. The displayed value for the secret `RG` will be then for instance `w s - d e v o p s` instead of `ws-devops`.
+The step named `debug secrets` is already implemented for you. It's mere purpose is to output the secrets you specified before.
+```YAML
+    - name: debug secrets
+        run: |
+          echo "${{ secrets.RG }}"                | sed -r 's/(.)/\1 /g'
+          echo "${{ secrets.ASP }}"               | sed -r 's/(.)/\1 /g'
+          echo "${{ secrets.WEBAPP }}"            | sed -r 's/(.)/\1 /g'
+          echo "${{ secrets.LOC }}"               | sed -r 's/(.)/\1 /g'
+          echo "${{ secrets.AZURE_CREDENTIALS }}" | sed -r 's/(.)/\1 /g'
+```
+
+Sounds easy but already the additional command `| sed...` indicates it is tricky. First why is that. Just outputting the value would just give asteriks such as `***` instead of the expected value. GitHub knows that you are outputting something sensitive via `echo` and will mask the value. `| sed` takes the `echo` output and changes it. Due to that GitHub is not masking the value anymore. The regular expression behind the `sed` command adds a space after every letter so that the changed value is still readable for us human beings. The displayed value for the secret `RG` will be then for instance `w s - d e v o p s` instead of `ws-devops`.
 
 Now we have to ensure to login to our azure subscription with our service princial. This time we have to implement an entire step. Replace the placeholder `<TODO Azure Login Step>`as follows and we will discuss the code in more detail afterwards:
 ```YAML
