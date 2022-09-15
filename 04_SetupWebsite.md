@@ -29,10 +29,10 @@ jobs:
     steps:
     # checkout the repo
     - name: 'Checkout Github Action' 
-      uses: actions/checkout@master
+      uses: actions/checkout@v3
       
     - name: Setup Node 10.x
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: '10.x'
 
