@@ -157,7 +157,7 @@ Replace the placeholder `<TODO Azure CLI Service Plan>` with the following code:
 ```
 Replace the placeholder `<TODO Azure CLI WebApp>` with the following code:
 ```YAML
-          az webapp create -g ${{ secrets.RG }} -p ${{ secrets.ASP }} -n ${{ secrets.WEBAPP }}  --runtime "node:16-lts"
+          az webapp create -g ${{ secrets.RG }} -p ${{ secrets.ASP }} -n ${{ secrets.WEBAPP }}  --runtime "node:22-lts"
 ```
 
 To learn more about the Workflow Syntax and Jobs visit:
