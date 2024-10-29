@@ -48,7 +48,7 @@ AZURE_CREDENTIALS =
 
 `clientId` and `clientSecret` deserve a quick extra explanation. A workflow changes things in your Azure subscription. Of course these changes must be associated with a user so that Azure can determine whether you have the permissions to do so. `clientId` denotes the service principal we created beforehand for you. We gave that user permission for the resource group in which you deploy your Azure services. Of course a user also needs credentials. The value behind `clientSecret` is exactly that.
 
-<br><img src="./images/Azure_Credentials.png" width="400"/><br>
+<br><img src="./images/Azure_Credentials.png" width="600"/><br>
 
 ### LOC - Geo-Location of the resources
 
