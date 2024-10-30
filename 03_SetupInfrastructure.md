@@ -180,7 +180,7 @@ Now you see a typical master detail screen with the avilable workflows on the le
 
 ![image](https://github.com/user-attachments/assets/fe66b88f-a2f2-4490-8946-41c681e70e51)
 
-For troubleshooting just click on the name "infra" next to the icon error icon. The "infra" run at the bottom of the previous screenshot for instance. The next two screenshots show the remeining two levels until you hit the details.
+For troubleshooting just click on the name "infra" next to the icon error icon. The "infra" run at the bottom of the previous screenshot for instance. The next two screenshots show the remaining two levels until you hit the details.
 
 <br><img src="./images/wkf_trouble_1.png" width="800"/><br>
 <br><img src="./images/wkf_trouble_2.png" width="800"/><br>
