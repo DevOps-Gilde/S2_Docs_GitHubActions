@@ -67,7 +67,7 @@ If the Task does not run through you may ask one of us to Help you out.
 
 https://`[yourWebAppName]`.azurewebsites.net/
 
-You should see a &quot;WELCOME TO WELCOME TO DEVOPS HACKATHON&quot; welcome screen.
+You should see a &quot;WELCOME TO MICROSOFT CLOUD GUILD&quot; welcome screen.
 
 Congratulations, you have deployed your first WebApp infrastructure.
  Now, you can go ahead and deploy some code to your WebApp.
